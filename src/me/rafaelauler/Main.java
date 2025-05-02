@@ -56,6 +56,8 @@ public EventManager getEventManager() {
 /*     */   {
 	  
 	getCommand("pvprounds").setExecutor(new MainCommand());
+
+	getCommand("pvr").setExecutor(new MainCommand());
 	 Bukkit.getPluginManager().registerEvents(new Eventos(), this);
 
 	 Bukkit.getPluginManager().registerEvents(new Automatic(), this);

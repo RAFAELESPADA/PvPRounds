@@ -76,29 +76,34 @@ public class Automatic implements Listener {
             	  destroy();
               }
               if (time == 30 && !star) {
-            	  
-                  broadcast("§bPvP Round will start in 30 seconds");
+            	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "30"));
+              }
+              for (Player p : players) {
+            	  if (p.getWorld() != Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.spawn.world"))) {
+            		  p.performCommand("pvprounds leave");
+            	  }
               }
               if (time == 15 && !star) {
-                  broadcast("§bPvPRound will start in 15 seconds");
+            	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "15"));
+                  
               } 
               if (time == 10 && !star) {
-                  broadcast("§bPvPRound will start in 10 seconds");
-
+            	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "10"));
+                  
               }
               if (time == 5 && !star) {
-                  broadcast("§bPvPRound will start in 5 seconds");
+            	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "5"));
 
               }
               if (players.size() == 9 && time >= 20 && !this.full && !star) {
                 time = 30;
 
-                broadcast("§bThe time changed because the minigame is almost full");
+          	  broadcast(Main.getInstance().getConfig().getString("TournamentTimeChanged").replaceAll("&", "§"));
                 this.full = true;
               } 
               if (time <= 0 && !star) {
                 this.gameType = GameType.GAMIMG;
-               broadcast("§aThe minigame PvPRounds will now start!");
+            	  broadcast(Main.getInstance().getConfig().getString("TournamentStarted").replaceAll("&", "§"));
                star = true;
                pvp = true;
                queuedPlayers();
@@ -109,7 +114,6 @@ public class Automatic implements Listener {
              time = time - 1;
               }
              if (!pvp && star) {
-            	 Bukkit.getConsoleSender().sendMessage("[DEBUG] SENDING TWO RANDOM PLAYERS TO FIGHT!");
              queuedPlayers();
              }
             } 
@@ -127,7 +131,7 @@ public class Automatic implements Listener {
         	    players.add(player);
         	    player.getInventory().clear();
 
-           	 Bukkit.getConsoleSender().sendMessage("[DEBUG] " + player.getName() + " joined the event!");
+          	  broadcast(Main.getInstance().getConfig().getString("PlayerJoinedMatch").replaceAll("&", "§").replace("%player%", player.getName()));
         	    player.getInventory().setArmorContents(null);
         	    for (PotionEffect pot : player.getActivePotionEffects())
         	      player.removePotionEffect(pot.getType()); 
@@ -144,11 +148,12 @@ public class Automatic implements Listener {
                 pvp = false;
 
           	  Bukkit.dispatchCommand(e.getPlayer(), "pvprounds leave");
-                Automatic.this.broadcast("§bThe player " + e.getPlayer().getName() + " §bdied because he left!");
+          	  broadcast(Main.getInstance().getConfig().getString("PlayerLeaveServer").replaceAll("&", "§").replace("%player%", e.getPlayer().getName()));
+        	  
                 return;
               } 
               if (Automatic.this.getGameType() == Automatic.GameType.GAMIMG)
-                Automatic.this.broadcast("§bThe player " + e.getPlayer().getName() + " left and died!"); 
+              	  broadcast(Main.getInstance().getConfig().getString("PlayerLeaveServerDeath").replaceAll("&", "§").replace("%player%", e.getPlayer().getName())); 
 
         	  Bukkit.dispatchCommand(e.getPlayer(), "pvprounds leave");
               queuedPlayers();
@@ -173,10 +178,9 @@ public class Automatic implements Listener {
               p.spigot().respawn();
               e.getDrops().clear();
               pvp = false;
-              p.sendMessage("§e§lPvPRound §fYou got killed by "  + d.getName() + "!");
-              Automatic.this.broadcast("§bThe player " + p.getName() + " got killed by "  + d.getName() + "!");
-              Automatic.this.broadcast("§b"+ players.size() + " players left.");
-
+              p.sendMessage(Main.getInstance().getConfig().getString("PlayerKilledMessage").replaceAll("&", "§").replace("%player%", p.getName()));
+              Automatic.this.broadcast(Main.getInstance().getConfig().getString("PlayerKilledBroadcast").replaceAll("&", "§").replace("%player%", p.getName()).replace("%killer%", d.getName()));
+              Automatic.this.broadcast(Main.getInstance().getConfig().getString("PlayersLeft").replaceAll("&", "§").replace("%left%", String.valueOf(players.size())));
         	  Bukkit.dispatchCommand(p, "pvprounds leave");
         	  if (players.size() > 1) {
 org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.spawn.world"));
@@ -185,19 +189,24 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
 			 	 d.getInventory().clear();
 			 	 d.getInventory().setArmorContents(null);
 			 	   Bukkit.getConsoleSender().sendMessage(d.getName() + " killed " + p.getName() + " in the event 1v1");
-              Automatic.this.broadcast("§bSearching for the next players...");
-        	  }
+			 	  Automatic.this.broadcast(Main.getInstance().getConfig().getString("Searching").replaceAll("&", "§"));
+		              }
               queuedPlayers();
             } 
           }
           
           @EventHandler(priority = EventPriority.MONITOR)
           public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
-        	  if (!star) {
-                  e.setCancelled(true);
-                }
+        	  
             if (!(e.getDamager() instanceof Player))
-              return; 
+              return;
+            if (!(e.getEntity() instanceof Player)) {
+            	return;
+            }
+            Player p = (Player)e.getEntity();
+            if (!star && MainCommand.game.contains(p.getName())) {
+                e.setCancelled(true);
+              }
             if (!Automatic.this.isSpec((Player)e.getDamager()))
               return; 
             if (!iniciou) {
@@ -214,12 +223,12 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
               return; 
             if (Automatic.this.isInPvP(p) && iniciou) {
               e.setCancelled(true);
-              p.sendMessage(String.valueOf("§eDo not use commands in battle."));
+		 	  Automatic.this.broadcast(Main.getInstance().getConfig().getString("CommandBlockedInBattle").replaceAll("&", "§"));
               return;
             } 
             if (e.getMessage().toLowerCase().startsWith("/") && !e.getMessage().toLowerCase().contains("/tell") && !e.getMessage().toLowerCase().contains("/pvprounds") && !p.hasPermission("kombo.cmd.report") && iniciou) {
               e.setCancelled(true);
-              p.sendMessage(String.valueOf("§cTo left the event write /pvprounds leave!"));
+		 	  Automatic.this.broadcast(Main.getInstance().getConfig().getString("CommandBlocked").replaceAll("&", "§"));
               return;
             } 
           }
@@ -241,15 +250,13 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
   public void queuedPlayers() {
     Player firstPlayer = null;
     Player secondPlayer = null;
-    Bukkit.getConsoleSender().sendMessage("[EVENT] FILA CHAMADA");
     
     pvp = true;
     for (Player players12 : players) {
 
-        Bukkit.getConsoleSender().sendMessage("[EVENT] Jogadores na lista: " + players12.getName());
+        Bukkit.getConsoleSender().sendMessage("[EVENT] Players in event: " + players12.getName());
       if (!MainCommand.game.contains(players12.getName())) {
 
-    	    Bukkit.getConsoleSender().sendMessage("[EVENT] REMOVENDO PLAYERS QUE NÃO ESTÃO NA VARIAVEL");
     	    players.remove(players12);
       }
     }
@@ -287,7 +294,7 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
     	      
     			  destroy();
     			  firstPlayer.chat("/pvprounds leave");
-      		Bukkit.broadcastMessage("§6The event PvPRounds ended! The winner is " + firstPlayer.getName());
+      		Bukkit.broadcastMessage(Main.getInstance().getConfig().getString("EventWinner").replaceAll("&", "§").replace("%player%", firstPlayer.getName()));
 	            	    		for (Player pg : Bukkit.getOnlinePlayers()) {
 	            	    			pg.playSound(pg.getLocation(), Sound.ENTITY_GHAST_DEATH, 10f, 10f);
 	            	    		}
@@ -303,14 +310,14 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
   
   public void broadcast(String message) {
     for (Player players2 : players) {
-      players2.sendMessage(String.valueOf("§b§l1V1: §f") + message);
+      players2.sendMessage(String.valueOf(Main.getInstance().getConfig().getString("Prefix").replaceAll("&", "§")) + message);
 
 		players2.playSound(players2.getLocation(), Sound.UI_BUTTON_CLICK, 10f, 10f);
-     TitleAPI.sendTitle(players2, 40, 40, 40, "§b§l1V1:", message);
+     TitleAPI.sendTitle(players2, 40, 40, 40, Main.getInstance().getConfig().getString("Prefix").replaceAll("&", "§"), message);
     }
     for (Player players2 : this.specs) {
-      players2.sendMessage(String.valueOf(("§b§l1V1: §f") + message));
-    TitleAPI.sendTitle(players2, 40, 40, 40, "§b§l1V1:", message);
+      players2.sendMessage(String.valueOf((Main.getInstance().getConfig().getString("Prefix").replaceAll("&", "§")) + message));
+    TitleAPI.sendTitle(players2, 40, 40, 40, Main.getInstance().getConfig().getString("Prefix").replaceAll("&", "§"), message);
 	players2.playSound(players2.getLocation(), Sound.UI_BUTTON_CLICK, 10f, 10f);
   }
   }
@@ -319,7 +326,7 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
     playersInPvp.clear();
     playersInPvp.add(firstPlayer);
     playersInPvp.add(secondPlayer);
-    broadcast("§cThe player §e" + firstPlayer.getName() + " §cwill fight against §e" +  secondPlayer.getName());
+	  Automatic.this.broadcast(Main.getInstance().getConfig().getString("Fight").replaceAll("&", "§").replace("%player1%", firstPlayer.getName()).replace("%player2%", secondPlayer.getName()));
     firstPlayer.setHealth(20.0D);
     secondPlayer.setHealth(20.0D);
 	org.bukkit.World w1 = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.loc_1.world"));
@@ -331,8 +338,8 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
 /* 156 */       Main.cfg_x1.getDouble("x1.coords.loc_2.y"), Main.cfg_x1.getDouble("x1.coords.loc_2.z"), 
 /* 157 */       Float.valueOf((float)Main.cfg_x1.getDouble("x1.coords.loc_2.yaw")).floatValue(), Float.valueOf((float)Main.cfg_x1.getDouble("x1.coords.loc_2.pitch")).floatValue()));
 /*     */     
-    firstPlayer.sendMessage("§eYou will fight against "  + secondPlayer.getName());
-    secondPlayer.sendMessage("§eYou will fight against " + firstPlayer.getName());
+    firstPlayer.sendMessage(Main.getInstance().getConfig().getString("FightAgainst").replaceAll("&", "§").replace("%player%", secondPlayer.getName()));
+    secondPlayer.sendMessage(Main.getInstance().getConfig().getString("FightAgainst").replaceAll("&", "§").replace("%player%", firstPlayer.getName()));
     for (PotionEffect pot : firstPlayer.getActivePotionEffects())
       firstPlayer.removePotionEffect(pot.getType()); 
     for (PotionEffect pot : secondPlayer.getActivePotionEffects())
@@ -355,11 +362,11 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
     secondPlayer.getInventory().setChestplate(chest);
     secondPlayer.getInventory().setBoots(boost);
     secondPlayer.getInventory().setLeggings(leg);
-    firstPlayer.getInventory().setItem(0, new ItemBuilder("§7Sword", Material.DIAMOND_SWORD).addEnchant(Enchantment.SHARPNESS, 1)
+    firstPlayer.getInventory().setItem(0, new ItemBuilder(Main.getInstance().getConfig().getString("SwordName").replaceAll("&", "§"), Material.DIAMOND_SWORD).addEnchant(Enchantment.SHARPNESS, 1)
 			.nbt("cancel-drop")
 			.toStack()
 	);
-    secondPlayer.getInventory().setItem(0, new ItemBuilder("§7Sword", Material.DIAMOND_SWORD).addEnchant(Enchantment.SHARPNESS, 1)
+    secondPlayer.getInventory().setItem(0, new ItemBuilder(Main.getInstance().getConfig().getString("SwordName").replaceAll("&", "§"), Material.DIAMOND_SWORD).addEnchant(Enchantment.SHARPNESS, 1)
 			.nbt("cancel-drop")
 			.toStack()
 	);
