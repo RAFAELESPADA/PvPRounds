@@ -4,7 +4,6 @@ package me.rafaelauler;
 import org.bukkit.Bukkit;
 /*    */ 
 /*    */ import org.bukkit.Material;
-/*    */ import org.bukkit.Sound;
 /*    */
 /*    */ import org.bukkit.entity.Player;
 /*    */ import org.bukkit.event.EventHandler;
@@ -34,7 +33,6 @@ import org.bukkit.inventory.ItemStack;
 Player p = e.getPlayer();
 /* 33 */       if (p.getHealth() < 20.0D && MainCommand.game.contains(p.getName()) && (p.getItemInHand().getType() == Material.MUSHROOM_STEW)) {
 	e.setCancelled(true);
-/* 34 */         p.playSound(p.getLocation(), Sound.valueOf(this.main.getConfig().getString("Sound.Soup")), 2.0F, 5.0F);
 /* 35 */        
 /* 36 */         if (p.getMaxHealth() >= 20) {
 /* 37 */         p.setHealth(p.getHealth() + this.vida >= p.getMaxHealth() ? p.getMaxHealth() : p.getHealth() + this.vida);
@@ -43,10 +41,7 @@ p.setFoodLevel(20);
 	// 11
 	 p.setHealth(p.getHealth() + this.vida >= p.getMaxHealth() ? p.getMaxHealth() : p.getHealth() + this.vida);
 }
-/* 38 */         if(main.getConfig().getBoolean(".KeepBowl"))
     e.getItem().setType(Material.BOWL);
-else
-	setOffhandItem(p, new ItemStack(Material.AIR));
 
 
 	

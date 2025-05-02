@@ -120,8 +120,7 @@ public static ArrayList<Player> player = new ArrayList();
 /*     */p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10f, 10f);
 /*     */ 
 /* 185 */           game.add(p.getName());
-/*     */           
-/*     */ 
+/*     */     Automatic.players.add(p);
 /*     */ 
 /*     */ 
 /*     */ 
@@ -176,7 +175,7 @@ if (args[0].equalsIgnoreCase("leave"))
 	/*     */       
 	/*     */ 
 	/*     */ 
-	/*     */ 
+	/*     */     Automatic.players.remove(p);
 	/* 283 */       game.remove(p.getName());
 	/* 284 */       game.remove(p.getName());
 	/* 285 */       game.remove(p.getName());

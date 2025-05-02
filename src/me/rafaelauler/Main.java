@@ -57,13 +57,14 @@ public EventManager getEventManager() {
 	  
 	getCommand("pvprounds").setExecutor(new MainCommand());
 	 Bukkit.getPluginManager().registerEvents(new Eventos(), this);
+
+	 Bukkit.getPluginManager().registerEvents(new Automatic(), this);
 	 Bukkit.getPluginManager().registerEvents(new Soup(this), this);
 	getCommand("setrounds").setExecutor(new SetRounds());
 	/*     */     
 /* 121 */     instance = this;
 /* 122 */     plugin = this;
 (getInstance()).eventmanager = new EventManager();
-Bukkit.getServer().getScheduler().runTaskTimer(getInstance(), new net.wavemc.core.util.UpdateScheduler(), 20, 20);
   instance = this;
    plugin = this;
 	ConsoleCommandSender cmd = Bukkit.getConsoleSender();

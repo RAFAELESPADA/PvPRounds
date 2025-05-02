@@ -35,11 +35,11 @@ public class Automatic implements Listener {
   
   private Listener listener;
   
-  public List<Player> players;
+  public static List<Player> players;
   
   private int maxPlayers;
   public static boolean iniciou;
-  public static boolean star;
+  public static boolean star = false;
   private boolean full;
   
   private boolean pvp;
@@ -67,40 +67,42 @@ public class Automatic implements Listener {
             if (players.size() >= 2 && !iniciou) {
             	iniciou = true;
             }
-            if (!iniciou) {
-            	return;
-            }
-              if (MainCommand.game.isEmpty()) {
+              if (MainCommand.game.isEmpty() && iniciou) {
             	  destroy();
               }
               if (time == 30 && !star) {
             	  
-                  Bukkit.broadcastMessage("§bPvP Round will start in 30 seconds");
+                  broadcast("§bPvP Round will start in 30 seconds");
               }
               if (time == 15 && !star) {
-                  Bukkit.broadcastMessage("§bPvPRound will start in 15 seconds");
+                  broadcast("§bPvPRound will start in 15 seconds");
               } 
               if (time == 10 && !star) {
-                  Bukkit.broadcastMessage("§bPvPRound will start in 10 seconds");
+                  broadcast("§bPvPRound will start in 10 seconds");
 
-              } 
+              }
+              if (time == 5 && !star) {
+                  broadcast("§bPvPRound will start in 5 seconds");
+
+              }
               if (players.size() == 9 && time >= 20 && !this.full && !star) {
                 time = 30;
 
-                Bukkit.broadcastMessage("§bThe time changed because the minigame is almost full");
+                broadcast("§bThe time changed because the minigame is almost full");
                 this.full = true;
               } 
               if (time <= 0 && !star) {
                 this.gameType = GameType.GAMIMG;
-               Bukkit.broadcastMessage("§aThe minigame PvPRounds will now start!");
+               broadcast("§aThe minigame PvPRounds will now start!");
                star = true;
+               pvp = true;
                queuedPlayers();
                time = 32;
               } 
               if (!star) {
             	  if (time > 0) {
              time = time - 1;
-             Bukkit.getConsoleSender().sendMessage("[DEBUG] THE MINIGAME WILL START IN " + time + " SEGUNDOS");
+             broadcast("§bPvPRound will start in " + time + " seconds");
               }
              if (!pvp && star) {
             	 Bukkit.getConsoleSender().sendMessage("[DEBUG] SENDING TWO RANDOM PLAYERS TO FIGHT!");
@@ -120,6 +122,8 @@ public class Automatic implements Listener {
         	  }
         	    players.add(player);
         	    player.getInventory().clear();
+
+           	 Bukkit.getConsoleSender().sendMessage("[DEBUG] " + player.getName() + " joined the event!");
         	    player.getInventory().setArmorContents(null);
         	    for (PotionEffect pot : player.getActivePotionEffects())
         	      player.removePotionEffect(pot.getType()); 
@@ -134,11 +138,15 @@ public class Automatic implements Listener {
                 e.getPlayer().damage(9999.0D);
                 playersInPvp.remove(e.getPlayer());
                 pvp = false;
+
+          	  Bukkit.dispatchCommand(e.getPlayer(), "pvprounds leave");
                 Automatic.this.broadcast("§bThe player " + e.getPlayer().getName() + " §bdied because he left!");
                 return;
               } 
               if (Automatic.this.getGameType() == Automatic.GameType.GAMIMG)
                 Automatic.this.broadcast("§bThe player " + e.getPlayer().getName() + " left and died!"); 
+
+        	  Bukkit.dispatchCommand(e.getPlayer(), "pvprounds leave");
               queuedPlayers();
             } 
           }
@@ -164,6 +172,7 @@ public class Automatic implements Listener {
               Automatic.this.broadcast("§bThe player " + p.getName() + " got killed by "  + d.getName() + "!");
               Automatic.this.broadcast("§b"+ players.size() + " players left.");
 
+        	  Bukkit.dispatchCommand(p, "pvprounds leave");
 org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.spawn.world"));
 /*  98 */     d.teleport(new Location(w, Main.cfg_x1.getDouble("x1.coords.spawn.x"), 
 /*  99 */       Main.cfg_x1.getDouble("x1.coords.spawn.y"), Main.cfg_x1.getDouble("x1.coords.spawn.z")));
@@ -212,6 +221,8 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
   public void removeFromEvent(Player player) {
 	  if (isInEvent(player)) {
 	    getPlayers().remove(player);
+
+      	 Bukkit.getConsoleSender().sendMessage("[DEBUG] " + player.getName() + " left the event!");
 	    Bukkit.getConsoleSender().sendMessage(player + " got removed from event!");
 	  }
   }
@@ -220,23 +231,34 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
   public void queuedPlayers() {
     Player firstPlayer = null;
     Player secondPlayer = null;
+    Bukkit.getConsoleSender().sendMessage("[EVENT] FILA CHAMADA");
+    
+    pvp = true;
     for (Player players : players) {
-      if (!players.isOnline()) {
-        this.players.remove(players);
-        if (!MainCommand.game.contains(players.getName())) {
-            this.players.remove(players);
-        }
-    } 
+
+        Bukkit.getConsoleSender().sendMessage("[EVENT] Jogadores na lista: " + players.getName());
+      if (!MainCommand.game.contains(players.getName())) {
+
+    	    Bukkit.getConsoleSender().sendMessage("[EVENT] REMOVENDO PLAYERS QUE NÃO ESTÃO NA VARIAVEL");
+          this.players.remove(players);
+      }
     }
+    
+      
+    
     firstPlayer = null;
-    {
+    
     	if (!players.isEmpty()) {
     secondPlayer = players.get((new Random()).nextInt(players.size()));
       firstPlayer = players.get((new Random()).nextInt(players.size()));
       Bukkit.getConsoleSender().sendMessage("[EVENT] FIRST PLAYER: " + firstPlayer.getName() + " VS SECOND PLAYER: " + secondPlayer.getName());
       playersInPvp.clear();
     	}
-    }
+    	else {
+    		Bukkit.getConsoleSender().sendMessage("[EVENT] THE PLAYER LIST IS EMPTY");
+    	     destroy(); 	
+    	}
+    
       if (firstPlayer != secondPlayer) {
     firstPlayer.closeInventory();
     secondPlayer.closeInventory();
@@ -257,7 +279,10 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
 	            	    		}
     			  return;
     		  }
-          queuedPlayers();
+    	  }
+    	  if (players.size() >= 2) {
+
+              queuedPlayers();
     	  }
       }
     	}
@@ -365,6 +390,9 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
       playersInPvp.clear();
       Bukkit.getConsoleSender().sendMessage("STOPPING PVP ROUND GAME");
       getPlayers().clear();
+      for (Player p : players) {
+    	  Bukkit.dispatchCommand(p, "pvprounds leave");
+      }
     HandlerList.unregisterAll(this.listener);
    Main.getInstance().getEventManager().setRdmAutomatic(null);
   }
