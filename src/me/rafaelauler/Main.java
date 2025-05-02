@@ -82,7 +82,7 @@ public EventManager getEventManager() {
 	/* 128 */       saveResource("config.yml", false);
 	/*     */     }
 	/* 130 */     this.cf1 = new File(getDataFolder(), "config.yml");
-	/* 131 */     if (file_x1.exists()) {
+	/* 131 */     if (!file_x1.exists()) {
 	/* 132 */       saveResource("1v1.yml", false);
 	/*     */     }
 
