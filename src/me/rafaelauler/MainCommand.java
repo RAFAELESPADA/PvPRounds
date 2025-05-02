@@ -112,10 +112,9 @@ public static ArrayList<Player> player = new ArrayList();
 }
 /*     */ Player p = (Player)sender;
 /*     */ 
-/* 179 */           p.sendMessage(ChatColor.GREEN + "You joined the pvpround minigame!");
+/* 179 */           p.sendMessage(Main.getInstance().getConfig().getString("Joined").replaceAll("&", "§"));
 
-/* 179 */           p.sendMessage(ChatColor.GREEN + "Soon you will be fighting a random player on the game.");
-/*     */ TitleAPI.sendTitle(p, 80, 80, 80, "§a§lPVP ROUNDS", "§eYou soon will be fighting your enemies");
+/*     */ TitleAPI.sendTitle(p, 80, 80, 80, Main.getInstance().getConfig().getString("JoinTitle").replaceAll("&", "§"), Main.getInstance().getConfig().getString("JoinSubTitle").replaceAll("&", "§"));
 /*     */ 
 /*     */p.playSound(p.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 10f, 10f);
 /*     */ 

@@ -223,12 +223,12 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
               return; 
             if (Automatic.this.isInPvP(p) && iniciou) {
               e.setCancelled(true);
-		 	  Automatic.this.broadcast(Main.getInstance().getConfig().getString("CommandBlockedInBattle").replaceAll("&", "§"));
+              p.sendMessage(Main.getInstance().getConfig().getString("CommandBlockedInBattle").replaceAll("&", "§"));
               return;
             } 
             if (e.getMessage().toLowerCase().startsWith("/") && !e.getMessage().toLowerCase().contains("/tell") && !e.getMessage().toLowerCase().contains("/pvprounds") && !p.hasPermission("kombo.cmd.report") && iniciou) {
               e.setCancelled(true);
-		 	  Automatic.this.broadcast(Main.getInstance().getConfig().getString("CommandBlocked").replaceAll("&", "§"));
+		 	  p.sendMessage(Main.getInstance().getConfig().getString("CommandBlocked").replaceAll("&", "§"));
               return;
             } 
           }
@@ -408,6 +408,9 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
       for (String s : new ArrayList<>(MainCommand.game)) {
     	  Player p = Bukkit.getPlayer(s);
     	  Bukkit.dispatchCommand(p, "pvprounds leave");
+    	  org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.quit.world"));
+    	  /*  98 */     p.teleport(new Location(w, Main.cfg_x1.getDouble("x1.coords.quit.x"), 
+    	  /*  99 */       Main.cfg_x1.getDouble("x1.coords.quit.y"), Main.cfg_x1.getDouble("x1.coords.quit.z")));
       }
       players.clear();
       time = 32;
