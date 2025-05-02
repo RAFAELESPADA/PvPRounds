@@ -178,6 +178,7 @@ public class Automatic implements Listener {
               Automatic.this.broadcast("§b"+ players.size() + " players left.");
 
         	  Bukkit.dispatchCommand(p, "pvprounds leave");
+        	  if (players.size() > 1) {
 org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.spawn.world"));
 /*  98 */     d.teleport(new Location(w, Main.cfg_x1.getDouble("x1.coords.spawn.x"), 
 /*  99 */       Main.cfg_x1.getDouble("x1.coords.spawn.y"), Main.cfg_x1.getDouble("x1.coords.spawn.z")));
@@ -185,7 +186,7 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
 			 	 d.getInventory().setArmorContents(null);
 			 	   Bukkit.getConsoleSender().sendMessage(d.getName() + " killed " + p.getName() + " in the event 1v1");
               Automatic.this.broadcast("§bSearching for the next players...");
-             
+        	  }
               queuedPlayers();
             } 
           }
