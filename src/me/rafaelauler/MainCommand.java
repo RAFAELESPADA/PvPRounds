@@ -203,6 +203,10 @@ if (args[0].equalsIgnoreCase("leave"))
 	p.setLevel(savelevel.get(p.getName()));
 	p.setFoodLevel(savehunger.get(p.getName()));
 	p.setRemainingAir(saveair.get(p.getName()));
+	  org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.quit.world"));
+	  /*  98 */     p.teleport(new Location(w, Main.cfg_x1.getDouble("x1.coords.quit.x"), 
+	  /*  99 */       Main.cfg_x1.getDouble("x1.coords.quit.y"), Main.cfg_x1.getDouble("x1.coords.quit.z")));
+  
 	/* 308 */       p.getInventory().setArmorContents((ItemStack[])savearmor.get(p.getName()));
 
 	/*     */   

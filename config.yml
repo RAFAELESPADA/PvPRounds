@@ -18,3 +18,4 @@ SwordName: "&aSword"
 Joined: "&eYou joined the tournament"
 JoinTitle: "&eYou joined"
 JoinSubTitle: "&fThe tournament"
+SendIPAddressData: true

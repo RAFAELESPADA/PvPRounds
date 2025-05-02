@@ -3,6 +3,8 @@ package me.rafaelauler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /*     */ import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
@@ -59,7 +61,17 @@ public EventManager getEventManager() {
 
 	getCommand("pvr").setExecutor(new MainCommand());
 	 Bukkit.getPluginManager().registerEvents(new Eventos(), this);
-
+	 /* 109 */     Metrics metrics = new Metrics(this);
+	 metrics.addCustomChart(new Metrics.DrilldownPie("serverAddress", () -> {
+			Map<String, Map<String, Integer>> map = new HashMap<>();
+			Map<String, Integer> entry = new HashMap<>();
+			if (getConfig().getBoolean("SendIPAddressData")) entry.put(Bukkit.getServer().getIp(), 1);
+			else entry.put("Hidden", 1);
+			
+			map.put("Port " + Bukkit.getServer().getPort(), entry);
+			
+			return map;
+		}));
 	 Bukkit.getPluginManager().registerEvents(new Automatic(), this);
 	 Bukkit.getPluginManager().registerEvents(new Soup(this), this);
 	getCommand("setrounds").setExecutor(new SetRounds());
