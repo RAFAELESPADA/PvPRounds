@@ -54,7 +54,6 @@ public EventManager getEventManager() {
 
 /*     */   public void onEnable()
 /*     */   {
-	  Bukkit.getServer().getScheduler().runTaskTimer(getInstance(), new net.wavemc.core.util.UpdateScheduler(), 20, 20);
 	  
 	getCommand("pvprounds").setExecutor(new MainCommand());
 	 Bukkit.getPluginManager().registerEvents(new Eventos(), this);
@@ -64,7 +63,8 @@ public EventManager getEventManager() {
 /* 121 */     instance = this;
 /* 122 */     plugin = this;
 (getInstance()).eventmanager = new EventManager();
-   instance = this;
+Bukkit.getServer().getScheduler().runTaskTimer(getInstance(), new net.wavemc.core.util.UpdateScheduler(), 20, 20);
+  instance = this;
    plugin = this;
 	ConsoleCommandSender cmd = Bukkit.getConsoleSender();
 	if (!Coins.setupPermissions()) {
