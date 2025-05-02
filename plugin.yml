@@ -4,6 +4,7 @@ author: Rafael Auler
 main: me.rafaelauler.Main
 description: PvPRounds plugin
 depend: [Vault]
+api-version: 1.20
 
 commands:
    pvprounds:

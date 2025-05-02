@@ -64,6 +64,9 @@ public class Automatic implements Listener {
             if (e.getType() != UpdateEvent.UpdateType.SEGUNDO) {
               return; 
             }
+            if (players.size() >= 2 && !iniciou) {
+            	iniciou = true;
+            }
             if (!iniciou) {
             	return;
             }

@@ -54,8 +54,11 @@ public EventManager getEventManager() {
 
 /*     */   public void onEnable()
 /*     */   {
+	  Bukkit.getServer().getScheduler().runTaskTimer(getInstance(), new net.wavemc.core.util.UpdateScheduler(), 20, 20);
+	  
 	getCommand("pvprounds").setExecutor(new MainCommand());
-
+	 Bukkit.getPluginManager().registerEvents(new Eventos(), this);
+	 Bukkit.getPluginManager().registerEvents(new Soup(this), this);
 	getCommand("setrounds").setExecutor(new SetRounds());
 	/*     */     
 /* 121 */     instance = this;
