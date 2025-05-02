@@ -110,6 +110,10 @@ public static ArrayList<Player> player = new ArrayList();
 	sender.sendMessage(ChatColor.YELLOW + "PvPRounds spawn is not seted yet!");
 	return true;
 }
+if (Automatic.star) {
+	sender.sendMessage("The tournament is occouring! Please wait to it finish before you join!");
+	return true;
+}
 /*     */ Player p = (Player)sender;
 /*     */ 
 /* 179 */           p.sendMessage(Main.getInstance().getConfig().getString("Joined").replaceAll("&", "§"));
