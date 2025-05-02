@@ -76,12 +76,13 @@ public EventManager getEventManager() {
         getServer().getPluginManager().disablePlugin(this);
         return;
     }
+	saveDefaultConfig();
 	File cf = new File(getDataFolder(), "config.yml");
 	/* 127 */     if (!cf.exists()) {
 	/* 128 */       saveResource("config.yml", false);
 	/*     */     }
 	/* 130 */     this.cf1 = new File(getDataFolder(), "config.yml");
-	/* 131 */     if (!file_x1.exists()) {
+	/* 131 */     if (file_x1.exists()) {
 	/* 132 */       saveResource("1v1.yml", false);
 	/*     */     }
 

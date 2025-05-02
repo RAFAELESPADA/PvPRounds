@@ -67,7 +67,7 @@ public static ArrayList<Player> player = new ArrayList();
 
 /*     */   
 /*     */   public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
-/*  91 */     if (commandLabel.equalsIgnoreCase("thepit") || (commandLabel.equalsIgnoreCase("thp")))
+/*  91 */     if (commandLabel.equalsIgnoreCase("pvprounds") || (commandLabel.equalsIgnoreCase("pvr")))
 /*     */     {
 /*  93 */       if (args.length == 0)
 /*     */       {
@@ -95,8 +95,7 @@ public static ArrayList<Player> player = new ArrayList();
 	/* 34 */       sender.sendMessage("§cThanks for use this plugin i really appreaciate IT");
 	/* 35 */       sender.sendMessage("§cIf you like it consider giving a §e§l\u2605\u2605\u2605\u2605\u2605 §cReview");
 	/* 36 */       sender.sendMessage("§cPS: §eSubscribe to my channel and follow me on Spigot Thanks! §9§l=)");
-/* 121 */         ((Player)sender).playSound(((Player)sender).getLocation(), Sound.valueOf(Main.getInstace().getConfig().getString("Sound.SucefullMessage")), 10.0F, 2.0F);
-/* 122 */         return true;
+/* 121 */         return true;
 /*     */       }
 /* 167 */       if (args[0].equalsIgnoreCase("join"))
 /*     */       {
