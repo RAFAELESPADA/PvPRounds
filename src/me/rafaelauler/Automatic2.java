@@ -83,11 +83,8 @@ public class Automatic2 implements Listener {
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
-                  for (Player n2 : Bukkit.getWorld("x2.coords.quit.world").getPlayers()) { 
-                	  if (n2 != null) {
-                	  n2.spigot().sendMessage(textComponent4);
-              } 
-                  }
+                  Automatic.broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  
               }
               for (Player p : players) {
             	  if (p.getWorld() != Bukkit.getServer().getWorld(Main.cfg_x1.getString("x2.coords.quit.world"))) {
@@ -99,11 +96,8 @@ public class Automatic2 implements Listener {
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "15"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
-                  for (Player n2 : Bukkit.getWorld("x2.coords.quit.world").getPlayers()) { 
-                	  if (n2 != null) {
-                	  n2.spigot().sendMessage(textComponent4);
-              } 
-                  }
+                  Automatic.broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  
               } 
               if (time == 10 && !star) {
             	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "10"));
@@ -111,9 +105,8 @@ public class Automatic2 implements Listener {
             	 TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
-                  for (Player n2 : Bukkit.getWorld("x2.coords.quit.world").getPlayers()) { 
-                	  n2.spigot().sendMessage(textComponent4);
-              } 
+                  Automatic.broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  
               }
               if (time == 5 && !star) {
             	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "5"));
@@ -121,11 +114,8 @@ public class Automatic2 implements Listener {
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
-                  for (Player n2 : Bukkit.getWorld("x2.coords.quit.world").getPlayers()) { 
-                	  if (n2 != null) {
-                	  n2.spigot().sendMessage(textComponent4);
-              } 
-                  }
+                  Automatic.broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  
               }
               if (players.size() == 9 && time >= 20 && !this.full && !star) {
                 time = 30;

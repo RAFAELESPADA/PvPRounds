@@ -9,6 +9,7 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -83,11 +84,8 @@ public class Automatic implements Listener {
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr join"));
-                  for (Player n2 : Bukkit.getWorld("x1.coords.quit.world").getPlayers()) { 
-                	  if (n2 != null) {
-                	  n2.spigot().sendMessage(textComponent4);
-              } 
-                  }
+                  broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  
               }
               for (Player p : players) {
             	  if (p.getWorld() != Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.quit.world"))) {
@@ -99,32 +97,24 @@ public class Automatic implements Listener {
             	  TextComponent textComponent = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "15"));
                   textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr join"));
-                  for (Player n2 : Bukkit.getWorld("x1.coords.quit.world").getPlayers()) { 
-                	  if (n2 != null) {
-                	  n2.spigot().sendMessage(textComponent);
-              } 
+                  broadcast2(textComponent, Bukkit.getWorld("x1.coords.quit.world"));
+                  
                   }
               if (time == 10 && !star) {
             	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "10"));
             	  TextComponent textComponent2 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "10"));
-                  textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
-                  textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr join"));
-                  for (Player n2 : Bukkit.getWorld("x1.coords.quit.world").getPlayers()) { 
-                	  if (n2 != null) {
-                	  n2.spigot().sendMessage(textComponent2);
-              } 
-                  }
+                  textComponent2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
+                  textComponent2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr join"));
+                  broadcast2(textComponent2, Bukkit.getWorld("x1.coords.quit.world"));
+              
+                 
               }
               if (time == 5 && !star) {
             	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "5"));
             	  TextComponent textComponent3 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "5"));
-                  textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
-                  textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr join"));
-                  for (Player n2 : Bukkit.getWorld("x1.coords.quit.world").getPlayers()) { 
-                	  if (n2 != null) {
-                	  n2.spigot().sendMessage(textComponent3);
-              } 
-                  }
+                  textComponent3.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
+                  textComponent3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr join"));
+                 broadcast2(textComponent3, Bukkit.getWorld("x1.coords.quit.world"));
               
               }
               if (players.size() == 9 && time >= 20 && !this.full && !star) {
@@ -148,7 +138,7 @@ public class Automatic implements Listener {
              if (!pvp && star) {
              queuedPlayers();
              }
-            }} 
+            } 
           }
           public void putInEvent2(Player player) {
         	  if (players.contains(player)) {
@@ -192,7 +182,11 @@ public class Automatic implements Listener {
               queuedPlayers();
             } 
           }
-          
+          public static void broadcast2(TextComponent text, World w){
+        	    for(Player p: w.getPlayers()){
+        	        p.spigot().sendMessage(text);
+        	    }
+        	    }
           @EventHandler
           public void onPlayerDeath(PlayerDeathEvent e) {
             if (!(e.getEntity() instanceof Player))
