@@ -1,0 +1,17 @@
+name: PvPRounds
+version: 3.0.0
+author: Rafael Auler
+main: me.rafaelauler.Main
+description: PvPRounds plugin
+depend: [Vault]
+
+commands:
+   pvprounds:
+   pvr:
+   pvprounds2:
+   pvr2:
+   setrounds:
+   setrounds2:
+   
+   
+   
