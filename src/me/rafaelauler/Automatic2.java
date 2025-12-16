@@ -75,7 +75,7 @@ public class Automatic2 implements Listener {
             	time = 30;
             	return;
             }
-              if (MainCommand.game.isEmpty() && iniciou) {
+              if (MainCommand2.game.isEmpty() && iniciou) {
             	  destroy();
               }
               if (time == 30 && !star) {
@@ -192,7 +192,7 @@ public class Automatic2 implements Listener {
             Player p = e.getEntity();
             Player d = e.getEntity().getKiller();
             if ((players.contains(d) || players.contains(p)) && 
-              playersInPvp.contains(d) && playersInPvp.contains(p) && (MainCommand.game.contains(d.getName()) && MainCommand.game.contains(p.getName()))) {
+              playersInPvp.contains(d) && playersInPvp.contains(p) && (MainCommand2.game.contains(d.getName()) && MainCommand2.game.contains(p.getName()))) {
             	if (!iniciou) {
             		return;
             	}
@@ -231,7 +231,7 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
             	return;
             }
             Player p = (Player)e.getEntity();
-            if (!star && MainCommand.game.contains(p.getName())) {
+            if (!star && MainCommand2.game.contains(p.getName())) {
                 e.setCancelled(true);
               }
             if (!Automatic2.this.isSpec((Player)e.getDamager()))
@@ -282,7 +282,7 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
     for (Player players12 : players) {
 
         Bukkit.getConsoleSender().sendMessage("[EVENT] Players in event: " + players12.getName());
-      if (!MainCommand.game.contains(players12.getName())) {
+      if (!MainCommand2.game.contains(players12.getName())) {
 
     	    players.remove(players12);
       }
@@ -427,7 +427,7 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
       setGameType(GameType.STARTING);
       iniciou = false;
       star = false;
-      for (String s : new ArrayList<>(MainCommand.game)) {
+      for (String s : new ArrayList<>(MainCommand2.game)) {
     	  Player p = Bukkit.getPlayer(s);
     	  Bukkit.dispatchCommand(p, "pvprounds leave");
     	  org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x2.coords.quit.world"));
