@@ -96,7 +96,7 @@ if (args[0].equalsIgnoreCase("quit")) {
 /*    */       } catch (IOException|InvalidConfigurationException e) {
 /* 77 */         e.printStackTrace();
 /*    */       }
-/* 79 */       p.sendMessage("§aSecond Player Location Setted with sucess!");
+/* 79 */       p.sendMessage("§aQUIT Location Setted with sucess!");
 /* 80 */       return true;
 /*    */     }
 /* 82 */     p.sendMessage("§cCorrect Usage: /setrounds <spawn/loc1/loc2>");
