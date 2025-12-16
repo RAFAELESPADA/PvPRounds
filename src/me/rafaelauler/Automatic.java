@@ -88,7 +88,7 @@ public class Automatic implements Listener {
                   
               }
               for (Player p : players) {
-            	  if (p.getWorld() != Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.quit.world"))) {
+            	  if (p.getWorld() != Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.spawn.world"))) {
             		  p.performCommand("pvprounds leave");
             	  }
               }
