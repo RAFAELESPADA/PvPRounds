@@ -200,11 +200,12 @@ public class Automatic2 implements Listener {
               players.remove(p);
               p.spigot().respawn();
               e.getDrops().clear();
+              p.chat("/pvr2 leave");
               pvp = false;
               p.sendMessage(Main.getInstance().getConfig().getString("PlayerKilledMessage").replaceAll("&", "§").replace("%player%", p.getName()));
               Automatic2.this.broadcast(Main.getInstance().getConfig().getString("PlayerKilledBroadcast").replaceAll("&", "§").replace("%player%", p.getName()).replace("%killer%", d.getName()));
               Automatic2.this.broadcast(Main.getInstance().getConfig().getString("PlayersLeft").replaceAll("&", "§").replace("%left%", String.valueOf(players.size())));
-        	  Bukkit.dispatchCommand(p, "pvprounds2 leave");
+        	  
         	  if (players.size() > 1) {
 org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.quit.world"));
 /*  98 */     d.teleport(new Location(w, Main.cfg_x1.getDouble("x1.coords.quit.x"), 
