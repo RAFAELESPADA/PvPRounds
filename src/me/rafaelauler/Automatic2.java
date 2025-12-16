@@ -83,7 +83,7 @@ public class Automatic2 implements Listener {
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
-                  Automatic.broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  Automatic.broadcast2(textComponent4,  Bukkit.getWorld(Main.cfg_x1.getString("x2.coords.quit.world")));
                   
               }
               for (Player p : players) {
@@ -96,7 +96,7 @@ public class Automatic2 implements Listener {
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "15"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
-                  Automatic.broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  Automatic.broadcast2(textComponent4,  Bukkit.getWorld(Main.cfg_x1.getString("x2.coords.quit.world")));
                   
               } 
               if (time == 10 && !star) {
@@ -105,7 +105,7 @@ public class Automatic2 implements Listener {
             	 TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
-                  Automatic.broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  Automatic.broadcast2(textComponent4,  Bukkit.getWorld(Main.cfg_x1.getString("x2.coords.quit.world")));
                   
               }
               if (time == 5 && !star) {
@@ -114,7 +114,7 @@ public class Automatic2 implements Listener {
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
-                  Automatic.broadcast2(textComponent4, Bukkit.getWorld("x1.coords.quit.world"));
+                  Automatic.broadcast2(textComponent4,  Bukkit.getWorld(Main.cfg_x1.getString("x2.coords.quit.world")));
                   
               }
               if (players.size() == 9 && time >= 20 && !this.full && !star) {
