@@ -76,10 +76,10 @@ public static ArrayList<Player> player = new ArrayList();
 /* 107 */         sender.sendMessage(ChatColor.DARK_AQUA + "§eCreated by Rafael Auler");
 /* 108 */         sender.sendMessage("");
 /* 109 */         sender.sendMessage(ChatColor.DARK_AQUA + " - " + ChatColor.AQUA + "/" + commandLabel + ChatColor.DARK_AQUA + " - " + ChatColor.GRAY + "Main command");
-/* 110 */         sender.sendMessage(ChatColor.DARK_AQUA + " - " + ChatColor.AQUA + "/" + commandLabel + " " + ChatColor.GREEN + "join" + ChatColor.DARK_AQUA + " - " + ChatColor.GRAY + "Join the PIT!");
-/* 111 */         sender.sendMessage(ChatColor.DARK_AQUA + " - " + ChatColor.AQUA + "/" + commandLabel + " " + ChatColor.GREEN + "leave" + ChatColor.DARK_AQUA + " - " + ChatColor.GRAY + "Leave the PIT!");                              
+/* 110 */         sender.sendMessage(ChatColor.DARK_AQUA + " - " + ChatColor.AQUA + "/" + commandLabel + " " + ChatColor.GREEN + "join" + ChatColor.DARK_AQUA + " - " + ChatColor.GRAY + "Join the PVP TOURNAMENT ROOM #2!");
+/* 111 */         sender.sendMessage(ChatColor.DARK_AQUA + " - " + ChatColor.AQUA + "/" + commandLabel + " " + ChatColor.GREEN + "leave" + ChatColor.DARK_AQUA + " - " + ChatColor.GRAY + "Leave the PVP TOURNAMENT ROOM #2!");
+
 /* 116 */         sender.sendMessage(ChatColor.DARK_AQUA + " - " + ChatColor.AQUA + "/" + commandLabel + " " + ChatColor.GREEN + "info" + ChatColor.DARK_AQUA + " - " + ChatColor.GRAY + "Shows plugin info");
-/* 119 */         sender.sendMessage(ChatColor.DARK_AQUA + " - " + ChatColor.AQUA + "/thepithelp" + ChatColor.DARK_AQUA + " - " + ChatColor.GRAY + "View the full command list");
 /* 120 */         sender.sendMessage(ChatColor.DARK_AQUA + "§m------------------------------------------");
 /* 102 */         return true;
 /*     */       }
@@ -95,6 +95,13 @@ public static ArrayList<Player> player = new ArrayList();
 	/* 34 */       sender.sendMessage("§cThanks for use this plugin i really appreaciate IT");
 	/* 35 */       sender.sendMessage("§cIf you like it consider giving a §e§l\u2605\u2605\u2605\u2605\u2605 §cReview");
 	/* 36 */       sender.sendMessage("§cPS: §eSubscribe to my channel and follow me on Spigot Thanks! §9§l=)");
+/* 121 */         return true;
+/*     */       }
+if (args[0].equalsIgnoreCase("stop"))
+/*     */       {
+	/* 27 */       sender.sendMessage("§4§l\u274C You stopped the tournament pvp room #1");
+	               Automatic2 r2 = new Automatic2();
+	            		   r2.destroy();
 /* 121 */         return true;
 /*     */       }
 /* 167 */       if (args[0].equalsIgnoreCase("join"))

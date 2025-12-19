@@ -21,11 +21,14 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import me.RockinChaos.itemjoin.api.ItemJoinAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.wavemc.core.bukkit.api.HelixActionBar;
 import net.wavemc.core.bukkit.item.ItemBuilder;
 import net.wavemc.core.util.UpdateEvent;
 
@@ -91,6 +94,9 @@ public class Automatic2 implements Listener {
             		  p.performCommand("pvprounds leave");
             	  }
               }
+for (Player p2 : players) {
+              HelixActionBar.sendActionBar(p2, Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", String.valueOf(time)) , 5); 
+}
               if (time == 15 && !star) {
             	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "15"));
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "15"));
@@ -106,7 +112,6 @@ public class Automatic2 implements Listener {
                   textComponent4.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Main.getInstance().getConfig().getString("ClickToJoin").replaceAll("&", "§")).create()));
                   textComponent4.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/pvr2 join"));
                   Automatic.broadcast2(textComponent4,  Bukkit.getWorld(Main.cfg_x1.getString("x2.coords.quit.world")));
-                  
               }
               if (time == 5 && !star) {
             	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "5"));
@@ -219,10 +224,17 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
         	  /*  98 */     p.teleport(new Location(w, Main.cfg_x1.getDouble("x1.coords.quit.x"), 
         	  /*  99 */       Main.cfg_x1.getDouble("x1.coords.quit.y"), Main.cfg_x1.getDouble("x1.coords.quit.z")));
 p.getInventory().setArmorContents(null);
-              p.kickPlayer(Main.getInstace().getConfig().getString(Main.getInstance().getConfig().getString("PlayerKilledMessage").replaceAll("&", "§").replace("%player%", p.getName())));
+new BukkitRunnable() {
+               
+               public void run() {
+            	   p.getInventory().clear();
+            	   if (Bukkit.getPluginManager().getPlugin("ItemJoin") != null) {
+            	   ItemJoinAPI itemAPI = new ItemJoinAPI();
+                  itemAPI.getItems(p);
+            	   }}}.runTaskLater(Main.plugin, 25l);
+            }
               queuedPlayers();
             } 
-          }
           
           @EventHandler(priority = EventPriority.MONITOR)
           public void onEntityDamageByEntity(EntityDamageByEntityEvent e) {
@@ -255,7 +267,7 @@ p.getInventory().setArmorContents(null);
               p.sendMessage(Main.getInstance().getConfig().getString("CommandBlockedInBattle").replaceAll("&", "§"));
               return;
             } 
-            if (e.getMessage().toLowerCase().startsWith("/") && !e.getMessage().toLowerCase().contains("/tell") && !e.getMessage().toLowerCase().contains("/pvprounds") && !p.hasPermission("kombo.cmd.report") && iniciou) {
+            if (e.getMessage().toLowerCase().startsWith("/") && !e.getMessage().toLowerCase().contains("/tell") && !e.getMessage().toLowerCase().contains("/pvprounds") && !p.hasPermission("pvprounds.bypass") && iniciou) {
               e.setCancelled(true);
 		 	  p.sendMessage(Main.getInstance().getConfig().getString("CommandBlocked").replaceAll("&", "§"));
               return;
@@ -277,6 +289,9 @@ p.getInventory().setArmorContents(null);
 
   
   public void queuedPlayers() {
+
+	  new BukkitRunnable() {
+		    public void run() {
     Player firstPlayer = null;
     Player secondPlayer = null;
     
@@ -331,8 +346,10 @@ p.getInventory().setArmorContents(null);
 
               queuedPlayers();
     	  }
+
+ 	   }}}.runTaskLater(Main.plugin, 100l);
       }
-    	}
+    	
   
   public void broadcast(String message) {
     for (Player players2 : players) {
@@ -394,7 +411,7 @@ p.getInventory().setArmorContents(null);
 			.nbt("cancel-drop")
 			.toStack()
 	);
-    for (int x = 0; x < 8; x++) {
+    for (int x = 0; x < 34; x++) {
       firstPlayer.getInventory().addItem(new ItemStack[] { new ItemStack(Material.MUSHROOM_SOUP) });
       secondPlayer.getInventory().addItem(new ItemStack[] { new ItemStack(Material.MUSHROOM_SOUP) });
     } 
@@ -420,7 +437,6 @@ p.getInventory().setArmorContents(null);
   }
   
   
-  
   public boolean isInPvP(Player player) {
     return (playersInPvp.contains(player) && getGameType() == GameType.GAMIMG);
   }
@@ -431,7 +447,7 @@ p.getInventory().setArmorContents(null);
       star = false;
       for (String s : new ArrayList<>(MainCommand2.game)) {
     	  Player p = Bukkit.getPlayer(s);
-    	  Bukkit.dispatchCommand(p, "pvprounds leave");
+    	  Bukkit.dispatchCommand(p, "pvprounds2 leave");
     	  org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x2.coords.quit.world"));
     	  /*  98 */     p.teleport(new Location(w, Main.cfg_x1.getDouble("x2.coords.quit.x"), 
     	  /*  99 */       Main.cfg_x1.getDouble("x2.coords.quit.y"), Main.cfg_x1.getDouble("x2.coords.quit.z")));

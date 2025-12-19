@@ -1,7 +1,6 @@
 package me.rafaelauler;
  
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,7 +62,12 @@ public EventManager2 getEventManager2() {
 /*     */   {
 	  
 	getCommand("pvprounds").setExecutor(new MainCommand());
-
+	if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null){
+		/* 151 */       Bukkit.getConsoleSender().sendMessage("§e[PvPRounds] §aPlaceHolderAPI is found!");
+		/* 151 */       Bukkit.getConsoleSender().sendMessage("§e[PvPRounds] §aHooking into it!");
+	    new PvPRounds(this).register();
+		/* 151 */       Bukkit.getConsoleSender().sendMessage("§e[PvPRounds] §aPlaceHolderAPI has hooked sucefully!");
+	}
 	getCommand("pvr").setExecutor(new MainCommand());
 	getCommand("pvprounds2").setExecutor(new MainCommand2());
 
@@ -117,17 +121,11 @@ public EventManager2 getEventManager2() {
 	/* 132 */       saveResource("1v1.yml", false);
 	/*     */     }
 
-/* 139 */       try {
-	cfg_x1.load(file_x1);
-} catch (FileNotFoundException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-} catch (IOException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-} catch (InvalidConfigurationException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}
-}
-}
+	try {
+		YamlConfiguration.loadConfiguration(file_x1).load(file_x1);
+	} catch (IOException | InvalidConfigurationException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	Bukkit.getConsoleSender().sendMessage("PVPROUNDS HAS BEEN ENABLED!");
+}}

@@ -9,6 +9,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 
@@ -78,6 +79,21 @@ public class Eventos implements Listener {
 	  public void aoconstruir(BlockPlaceEvent e)
 	  {
 	    if (MainCommand.game.contains(e.getPlayer().getName())) {
+	      e.setCancelled(true);
+	    }
+	  }
+	  @EventHandler
+	  public void aocgonstruir(FoodLevelChangeEvent e)
+	  {
+	    if (MainCommand.game.contains(e.getEntity().getName())) {
+	      e.setCancelled(true);
+	    }
+	  }
+
+	  @EventHandler
+	  public void aocgonstruir2(FoodLevelChangeEvent e)
+	  {
+	    if (MainCommand2.game.contains(e.getEntity().getName())) {
 	      e.setCancelled(true);
 	    }
 	  }
