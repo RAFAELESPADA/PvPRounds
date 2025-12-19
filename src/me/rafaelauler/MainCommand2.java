@@ -117,7 +117,7 @@ if (args[0].equalsIgnoreCase("stop"))
 	sender.sendMessage(ChatColor.YELLOW + "PvPRounds spawn is not seted yet!");
 	return true;
 }
-if (Automatic.star) {
+if (Automatic2.star) {
 	sender.sendMessage("The tournament is occouring! Please wait to it finish before you join!");
 	return true;
 }
@@ -129,7 +129,7 @@ if (Automatic.star) {
 /*     */ 
 /*     */ 
 /* 185 */           game.add(p.getName());
-/*     */     Automatic.players.add(p);
+/*     */     Automatic2.players.add(p);
 /*     */ 
 /*     */ 
 /*     */ 
@@ -184,7 +184,7 @@ if (args[0].equalsIgnoreCase("leave"))
 	/*     */       
 	/*     */ 
 	/*     */ 
-	/*     */     Automatic.players.remove(p);
+	/*     */     Automatic2.players.remove(p);
 	/* 283 */       game.remove(p.getName());
 	/* 284 */       game.remove(p.getName());
 	/* 285 */       game.remove(p.getName());
