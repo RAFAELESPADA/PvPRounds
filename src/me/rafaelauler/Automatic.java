@@ -82,9 +82,11 @@ public class Automatic implements Listener {
               if (MainCommand.game.isEmpty() && iniciou) {
             	  destroy();
               }
-              for (Player p2 : players) {
-                  HelixActionBar.sendActionBar(p2, Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", String.valueOf(time)) , 5); 
-    }
+
+for (Player p2 : players) {
+
+	HelixActionBar.send(p2,  Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", String.valueOf(time)));
+	}
               if (time == 30 && !star) {
             	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "30"));
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
