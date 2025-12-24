@@ -172,24 +172,20 @@ for (Player p2 : players) {
           public void onPlayerQuit(PlayerQuitEvent e) {
             if (players.contains(e.getPlayer())) {
               players.remove(e.getPlayer());
-
-          	  e.getPlayer().chat("/pvprounds leave");
-              if (playersInPvp.contains(e.getPlayer())) {
-                e.getPlayer().damage(9999.0D);
-                playersInPvp.remove(e.getPlayer());
-                pvp = false;
-
           	  broadcast(Main.getInstance().getConfig().getString("PlayerLeaveServer").replaceAll("&", "§").replace("%player%", e.getPlayer().getName()));
         	  
-                return;
-              } 
-              if (Automatic.this.getGameType() == Automatic.GameType.GAMIMG)
+          	  e.getPlayer().chat("/pvprounds leave");
+            }
+              if (Automatic.this.getGameType() == Automatic.GameType.GAMIMG && playersInPvp.contains(e.getPlayer())) {
               	  broadcast(Main.getInstance().getConfig().getString("PlayerLeaveServerDeath").replaceAll("&", "§").replace("%player%", e.getPlayer().getName())); 
-
+                  e.getPlayer().damage(9999.0D);
+                  playersInPvp.remove(e.getPlayer());
+                  pvp = false;
         	  Bukkit.dispatchCommand(e.getPlayer(), "pvprounds leave");
               queuedPlayers();
             } 
-          }
+            }
+          
           public static void broadcast2(TextComponent text, World w){
         	    for(Player p: w.getPlayers()){
         	        p.spigot().sendMessage(text);
@@ -254,15 +250,19 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
             if (!(e.getEntity() instanceof Player)) {
             	return;
             }
+            if (!iniciou) {
+            	return;
+            }
             Player p = (Player)e.getEntity();
             if (!star && MainCommand.game.contains(p.getName())) {
                 e.setCancelled(true);
               }
+            if (!playersInPvp.contains(p) && MainCommand.game.contains(p.getName())) {
+                e.setCancelled(true);
+              }
             if (!Automatic.this.isSpec((Player)e.getDamager()))
               return; 
-            if (!iniciou) {
-            	return;
-            }
+           
             
             e.setCancelled(true);
           }
