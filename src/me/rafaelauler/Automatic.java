@@ -85,8 +85,10 @@ public class Automatic implements Listener {
 
 for (Player p2 : players) {
 
+if (!playersInPvp.contains(p2)) {
 	HelixActionBar.send(p2,  Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", String.valueOf(time)));
 	}
+}
               if (time == 30 && !star) {
             	  broadcast(Main.getInstance().getConfig().getString("TournamentStart").replaceAll("&", "§").replace("%time%", "30"));
             	  TextComponent textComponent4 = new TextComponent(Main.getInstance().getConfig().getString("TournamentStartGlobal").replaceAll("&", "§").replace("%time%", "30"));
@@ -95,7 +97,7 @@ for (Player p2 : players) {
                   broadcast2(textComponent4, Bukkit.getWorld(Main.cfg_x1.getString("x1.coords.quit.world")));
                   
               }
-              for (Player p : players) {
+              for (Player p : new ArrayList<>(players)) {
             	  if (p.getWorld() != Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.spawn.world"))) {
             		  p.performCommand("pvprounds leave");
             	  }
@@ -217,10 +219,10 @@ for (Player p2 : players) {
         	  
         	  if (players.size() > 1) {
 org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coords.quit.world"));
-/*  98 */     d.teleport(new Location(w, Main.cfg_x1.getDouble("x1.coords.quit.x"), 
+/*  98 */     p.teleport(new Location(w, Main.cfg_x1.getDouble("x1.coords.quit.x"), 
 /*  99 */       Main.cfg_x1.getDouble("x1.coords.quit.y"), Main.cfg_x1.getDouble("x1.coords.quit.z")));
-			 	 d.getInventory().clear();
-			 	 d.getInventory().setArmorContents(null);
+			 	 p.getInventory().clear();
+			 	 p.getInventory().setArmorContents(null);
 			 	   Bukkit.getConsoleSender().sendMessage(d.getName() + " killed " + p.getName() + " in the event 1v1");
 			 	  Automatic.this.broadcast(Main.getInstance().getConfig().getString("Searching").replaceAll("&", "§"));
 		              }
