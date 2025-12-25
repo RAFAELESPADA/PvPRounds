@@ -75,6 +75,10 @@ public class Automatic implements Listener {
             if (players.size() >= 2 && !iniciou) {
             	iniciou = true;
             }
+            if (players.size() == 1 && !iniciou) {
+            	iniciou = false;
+            	time = 30;
+            }
             else if (!iniciou) {
             	time = 30;
             	return;
