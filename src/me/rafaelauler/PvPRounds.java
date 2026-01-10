@@ -111,15 +111,18 @@ static Main plugin;
 
     if (indentifier.equals("players_room_1")) {
 
-      return String.valueOf(Automatic.players.size());
+    	/*     */ Automatic a = new Automatic();
+    	
+      return String.valueOf(a.players.size());
     }
     if (p == null) {
       return "";
     }
     if (indentifier.equals("players_room_2")) {
 
-
-        return String.valueOf(Automatic2.players.size()); }
+    	 Automatic2 a = new Automatic2();
+    	
+        return String.valueOf(a.players.size()); }
     return null;
   }
 }

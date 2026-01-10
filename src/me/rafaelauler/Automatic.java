@@ -3,8 +3,9 @@ package me.rafaelauler;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,7 +43,7 @@ public class Automatic implements Listener {
   
   private Listener listener;
   
-  public static List<Player> players;
+  public List<Player> players;
   
   private int maxPlayers;
   public static boolean iniciou;
@@ -305,66 +306,41 @@ org.bukkit.World w = Bukkit.getServer().getWorld(Main.cfg_x1.getString("x1.coord
 
   
   public void queuedPlayers() {
-	  new BukkitRunnable() {
-		    public void run() {
-    Player firstPlayer = null;
-    Player secondPlayer = null;
-    
-    pvp = true;
-    for (Player players12 : players) {
+	    new BukkitRunnable() {
+	        public void run() {
 
-        Bukkit.getConsoleSender().sendMessage("[EVENT] Players in event: " + players12.getName());
-      if (!MainCommand.game.contains(players12.getName())) {
+	            if (players.size() < 2) {
+	                if (players.size() == 1 && iniciou) {
+	                    Player winner = players.get(0);
+	                    destroy();
+	                    Bukkit.broadcastMessage("§aVencedor: " + winner.getName());
+	                }
+	                return;
+	            }
 
-    	    players.remove(players12);
-      }
-    }
-    
-      
-    
-    firstPlayer = null;
-  
-    	if (!players.isEmpty()) {
-    secondPlayer = players.get((new Random()).nextInt(players.size()));
-      firstPlayer = players.get((new Random()).nextInt(players.size()));
-      Bukkit.getConsoleSender().sendMessage("[EVENT] FIRST PLAYER: " + firstPlayer.getName() + " VS SECOND PLAYER: " + secondPlayer.getName());
-      playersInPvp.clear();
-    	}
-    	else {
-    		
-    	     destroy(); 	
-    	}
-      if (firstPlayer != secondPlayer) {
-    firstPlayer.closeInventory();
-    secondPlayer.closeInventory();
-    Bukkit.getConsoleSender().sendMessage("[EVENT] FIRST PLAYER: " + firstPlayer.getName() + " VS SECOND PLAYER: " + secondPlayer.getName());
-    
-    send1v1(firstPlayer, secondPlayer);
-      } else if (firstPlayer == secondPlayer && players.size() == 1 && !iniciou) {
-    	
-    	  time = 30;
-    	  star = false;
-  }
-      else {
-    	  {
-    		  if (players.size() == 1 && iniciou) {
-    			  Bukkit.getConsoleSender().sendMessage("[EVENT] PLAYER: " + firstPlayer.getName() + " IS THE WINNER");
-    	      
-    			  destroy();
-    			  firstPlayer.chat("/pvprounds leave");
-      		Bukkit.broadcastMessage(Main.getInstance().getConfig().getString("EventWinner").replaceAll("&", "§").replace("%player%", firstPlayer.getName()));
-	            	    		
-    			  return;
-    		  }
-    	  }
-    	  if (players.size() >= 2) {
+	            Iterator<Player> it = players.iterator();
+	            while (it.hasNext()) {
+	                Player p = it.next();
+	                if (!MainCommand.game.contains(p.getName())) {
+	                    it.remove();
+	                }
+	            }
 
-              queuedPlayers();
-    	  }
+	            if (players.size() < 2) return;
 
-  	   }}}.runTaskLater(Main.plugin, 100l);
-      
-    	}
+	            Collections.shuffle(players);
+
+	            Player p1 = players.get(0);
+	            Player p2 = players.get(1);
+
+	            playersInPvp.clear();
+	            playersInPvp.add(p1);
+	            playersInPvp.add(p2);
+
+	            send1v1(p1, p2);
+	        }
+	    }.runTaskLater(Main.plugin, 20L);
+	}
   
   public void broadcast(String message) {
     for (Player players2 : players) {

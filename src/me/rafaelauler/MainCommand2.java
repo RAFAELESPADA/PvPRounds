@@ -129,7 +129,8 @@ if (Automatic2.star) {
 /*     */ 
 /*     */ 
 /* 185 */           game.add(p.getName());
-/*     */     Automatic2.players.add(p);
+/*     */     Automatic2 a = new Automatic2();
+a.putInEvent(p);
 /*     */ 
 /*     */ 
 /*     */ 
@@ -183,8 +184,8 @@ if (args[0].equalsIgnoreCase("leave"))
 	
 	/*     */       
 	/*     */ 
-	/*     */ 
-	/*     */     Automatic2.players.remove(p);
+	/*     */ Automatic2 a = new Automatic2();
+	a.players.remove(p);
 	/* 283 */       game.remove(p.getName());
 	/* 284 */       game.remove(p.getName());
 	/* 285 */       game.remove(p.getName());
