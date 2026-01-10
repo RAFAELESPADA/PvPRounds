@@ -13,9 +13,19 @@
 /*     */ public class TitleAPI extends org.bukkit.plugin.java.JavaPlugin implements Listener
 /*     */ {
 /*     */   @Deprecated
-/*     */   public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String message)
+/*     */   public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String message, String message2)
 /*     */   {
-/*  17 */     sendTitle(player, fadeIn, stay, fadeOut, message, null);
+	try {
+	Class.forName("org.bukkit.entity.Fox"); 
+	player.sendTitle(message, message2, fadeIn, stay, fadeOut);
+	}
+	 catch (ClassNotFoundException | NoClassDefFoundError e) {
+
+/*  17 */     sendTitle2(player, fadeIn, stay, fadeOut, message, null);
+	}
+	
+	
+	
 /*     */   }
 /*     */   
 /*     */   @Deprecated
@@ -47,7 +57,7 @@
 /*  46 */     return null;
 /*     */   }
 /*     */   
-/*     */   public static void sendTitle(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle)
+/*     */   public static void sendTitle2(Player player, Integer fadeIn, Integer stay, Integer fadeOut, String title, String subtitle)
 /*     */   {
 /*  51 */     TitleSendEvent titleSendEvent = new TitleSendEvent(player, title, subtitle);
 /*  52 */     Bukkit.getPluginManager().callEvent(titleSendEvent);
