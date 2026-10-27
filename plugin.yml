@@ -1,0 +1,52 @@
+name: PvPRounds
+version: 4.0.2
+author: Rafael Auler
+main: me.rafaelauler.Main
+description: PvPRounds plugin
+
+depend:
+  - Vault
+
+softdepend:
+  - ItemJoin
+  - PlaceholderAPI
+  - TAB
+
+api-version: '1.21'
+
+commands:
+  pvprounds:
+    description: Main PvPRounds command
+    usage: /pvprounds
+
+  pvr:
+    description: Room 1 command
+    usage: /pvr
+
+  pvprounds2:
+    description: Room 2 command
+    usage: /pvprounds2
+
+  pvr2:
+    description: Room 2 shortcut
+    usage: /pvr2
+
+  setrounds:
+    description: Configure the Room 1 tournament
+    usage: /setrounds
+
+  setrounds2:
+    description: Configure the Room 2 tournament
+    usage: /setrounds2
+
+  pvprooms:
+    description: Tournament room selection menu
+    usage: /pvprooms
+
+permissions:
+  pvprounds.admin:
+    description: Allows stopping PvPRounds tournaments.
+    default: op
+  pvprounds.bypass:
+    description: Allows bypassing PvPRounds tournament command restrictions.
+    default: op

@@ -1,0 +1,53 @@
+# PvPRounds Tournament Scoreboard Configuration
+
+torneio-scoreboard:
+
+  enabled: true
+
+  # Update interval in ticks (20 ticks = 1 second).
+
+  update-interval-ticks: 20
+
+  # Scoreboard title. Use & for color codes.
+
+  title: "&b&lSKYZERMC"
+
+  # Text displayed by the {site} placeholder.
+
+  site: "&bskyzermc.com.br"
+
+  # Maximum of 15 lines. The order below determines how lines appear on the scoreboard.
+
+  # Available placeholders:
+
+  # {torneio} {jogador} {estado} {inscritos} {maximo} {fila}
+
+  # {combates} {espectadores} {tempo} {adversario} {vida} {site}
+
+  lines:
+
+    - "&8&m----------------"
+
+    - "&bTournament &f#{torneio}"
+
+    - " "
+
+    - "&7Status: {estado}"
+
+    - "&7Players: &f{inscritos}/{maximo}"
+
+    - "&7In queue: &e{fila}"
+
+    - "&7Fighting: &c{combates}"
+
+    - "&7Spectators: &f{espectadores}"
+
+    - " "
+
+    - "&7Time: &e{tempo}s"
+
+    - "&7Opponent: &c{adversario}"
+
+    - "&7Your health: {vida}"
+
+    - "{site}"
