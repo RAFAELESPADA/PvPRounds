@@ -26,6 +26,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -290,20 +291,65 @@ public class Automatic implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerDeath(PlayerDeathEvent event) {
-        Player dead = event.getEntity();
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onSwordDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
 
-        if (!star || !players.contains(dead) || !playersInPvp.contains(dead)) {
+        if (!MainCommand.game.contains(player.getName())
+                && !MainCommand2.game.contains(player.getName())) {
             return;
         }
 
         event.getDrops().clear();
+    }
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onFallDamage(EntityDamageEvent event) {
+
+        if (!(event.getEntity() instanceof Player)) {
+            return;
+        }
+
+        if (event.getCause() != EntityDamageEvent.DamageCause.FALL) {
+            return;
+        }
+
+        Player player = (Player) event.getEntity();
+
+        boolean room1 = MainCommand.game.contains(player.getName());
+        boolean room2 = MainCommand2.game.contains(player.getName());
+
+        // Não interfere em outros minigames
+        if (!room1 && !room2) {
+            return;
+        }
+
+        // Cancela o dano de queda nas salas
+        event.setCancelled(true);
+
+        // Limpa a distância acumulada de queda
+        player.setFallDistance(0.0F);
+    }
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player dead = event.getEntity();
+
+        // Apenas jogadores lutando no torneio
+        if (!star || !players.contains(dead)
+                || !playersInPvp.contains(dead)) {
+            return;
+        }
+
+        // Remove todos os drops, incluindo a espada de diamante
+        event.getDrops().clear();
+        event.setDeathMessage(null);
+
         Player killer = dead.getKiller();
         Player opponent = null;
 
         for (Player fighter : new ArrayList<>(playersInPvp)) {
-            if (fighter != null && !fighter.equals(dead) && fighter.isOnline()) {
+            if (fighter != null
+                    && !fighter.equals(dead)
+                    && fighter.isOnline()) {
                 opponent = fighter;
                 break;
             }
@@ -315,21 +361,37 @@ public class Automatic implements Listener {
         pvp = false;
 
         if (killer != null) {
-            dead.sendMessage(color(getConfigMessage("PlayerKilledMessage", "&cYou were eliminated, %player%."))
+            dead.sendMessage(color(getConfigMessage(
+                    "PlayerKilledMessage",
+                    "&cYou were eliminated, %player%."))
                     .replace("%player%", dead.getName()));
-            String broadcast = getConfigMessage("PlayerKilledBroadcast", "&c%player% was defeated by %killer%.");
-            broadcast(color(broadcast).replace("%player%", dead.getName()).replace("%killer%", killer.getName()));
+
+            String broadcast = getConfigMessage(
+                    "PlayerKilledBroadcast",
+                    "&c%player% was defeated by %killer%.");
+
+            broadcast(color(broadcast)
+                    .replace("%player%", dead.getName())
+                    .replace("%killer%", killer.getName()));
         }
 
-        String leftMessage = getConfigMessage("PlayersLeft", "&ePlayers remaining: %left%");
-        broadcast(color(leftMessage).replace("%left%", String.valueOf(players.size())));
+        String leftMessage = getConfigMessage(
+                "PlayersLeft",
+                "&ePlayers remaining: %left%");
 
-        // The respawn request is handled one tick later by Main for every player on the server.
-        // Keep this participant pending until PlayerRespawnEvent fires. Teleporting/restoring
-        // inventory before that event can leave 1.8 clients with a stale camera/model.
+        broadcast(color(leftMessage)
+                .replace("%left%", String.valueOf(players.size())));
+
+        // Guarda eliminação até o respawn ser concluído
         pendingEliminations.put(dead.getUniqueId(), opponent);
-    }
 
+        // Respawn automático somente para este participante
+        Bukkit.getScheduler().runTaskLater(main, () -> {
+            if (dead.isOnline() && dead.isDead()) {
+                dead.spigot().respawn();
+            }
+        }, 1L);
+    }
     @EventHandler(priority = EventPriority.MONITOR)
     public void onTournamentPlayerRespawn(PlayerRespawnEvent event) {
         Player dead = event.getPlayer();

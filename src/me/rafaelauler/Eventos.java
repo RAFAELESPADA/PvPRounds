@@ -4,13 +4,16 @@ import org.bukkit.Material;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
 
 public class Eventos implements Listener {
@@ -25,6 +28,25 @@ public class Eventos implements Listener {
 	      e.setLine(2, "§6Right Click");
 	      e.setLine(3, "§3Me");
 	    }
+	  }
+	  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+	  public void onSwordDrop(PlayerDropItemEvent event) {
+	      Player player = event.getPlayer();
+
+	      // Verifica se está em alguma das duas salas
+	      boolean room1 = MainCommand.game.contains(player.getName());
+	      boolean room2 = MainCommand2.game.contains(player.getName());
+
+	      if (!room1 && !room2) {
+	          return;
+	      }
+
+	      ItemStack item = event.getItemDrop().getItemStack();
+
+	      // Impede dropar espada de diamante
+	      if (item.getType() == Material.DIAMOND_SWORD) {
+	          event.setCancelled(true);
+	      }
 	  }
 	  @EventHandler
 	  public void onSignChange22(SignChangeEvent e)

@@ -228,22 +228,8 @@ public class Main extends JavaPlugin implements Listener {
      * The one-tick delay is intentional: sending the respawn request inside PlayerDeathEvent
      * can race entity death processing and leave the client's camera/model out of sync.
      */
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onAnyPlayerDeath(PlayerDeathEvent event) {
-        Player dead = event.getEntity();
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            if (!dead.isOnline() || !dead.isDead()) {
-                return; // The client or another plugin already completed the respawn.
-            }
-            try {
-                dead.spigot().respawn();
-            } catch (Throwable throwable) {
-                getLogger().warning("Could not force respawn for " + dead.getName()
-                        + "; the client may need to use the respawn control. "
-                        + throwable.getClass().getSimpleName());
-            }
-        }, 1L);
-    }
+   
+    
 
     @Override
     public void onDisable() {

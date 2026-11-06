@@ -1,7 +1,4 @@
-
 package me.rafaelauler;
-
-import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -19,26 +16,31 @@ public class Soup implements Listener {
     public int vida = 7;
     public int fome = 7;
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onUseSoup(PlayerInteractEvent event) {
+
+        // Evita executar duas vezes por causa da mão secundária
         if (event.getHand() != EquipmentSlot.HAND) {
             return;
         }
 
         Action action = event.getAction();
+
         if (action != Action.RIGHT_CLICK_AIR
                 && action != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
         Player player = event.getPlayer();
-        ItemStack item = event.getItem();
+
+        ItemStack item = player.getInventory().getItemInMainHand();
 
         if (item == null || item.getType() != Material.MUSHROOM_STEW) {
             return;
         }
 
         String name = player.getName();
+
         boolean inRoom1 = MainCommand.game.contains(name);
         boolean inRoom2 = MainCommand2.game.contains(name);
 
@@ -46,31 +48,38 @@ public class Soup implements Listener {
             return;
         }
 
-        double maxHealth = player.getMaxHealth();
+        // Impede o comportamento normal da sopa
+        event.setCancelled(true);
+
         double health = player.getHealth();
+        double maxHealth = player.getMaxHealth();
+
         int food = player.getFoodLevel();
 
-        boolean heal = vida > 0 && health < maxHealth;
-        boolean restoreFood = fome > 0 && food < 20;
+        boolean needsHealth = health < maxHealth;
+        boolean needsFood = food < 20;
 
-        // Não consumir se nenhum atributo puder ser restaurado.
-        if (!heal && !restoreFood) {
-            event.setCancelled(true);
+        // Não consome sopa se estiver com vida e fome cheias
+        if (!needsHealth && !needsFood) {
             return;
         }
 
-        event.setCancelled(true);
-
-        if (heal) {
-            player.setHealth(Math.min(maxHealth, health + vida));
+        // Recupera vida
+        if (needsHealth) {
+            double newHealth = Math.min(maxHealth, health + vida);
+            player.setHealth(newHealth);
         }
 
-        if (restoreFood) {
-            player.setFoodLevel(Math.min(20, food + fome));
+        // Recupera fome
+        if (needsFood) {
+            int newFood = Math.min(20, food + fome);
+            player.setFoodLevel(newFood);
         }
 
+        // Consome sopa e entrega tigela
         consumeSoup(player);
 
+        // Som de consumo
         player.playSound(
                 player.getLocation(),
                 Sound.ENTITY_GENERIC_EAT,
@@ -80,28 +89,34 @@ public class Soup implements Listener {
     }
 
     private void consumeSoup(Player player) {
-        ItemStack held = player.getInventory().getItemInMainHand();
 
-        if (held.getType() != Material.MUSHROOM_STEW) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+
+        if (item == null || item.getType() != Material.MUSHROOM_STEW) {
             return;
         }
 
-        if (held.getAmount() <= 1) {
+        if (item.getAmount() <= 1) {
+
             player.getInventory().setItemInMainHand(
                     new ItemStack(Material.BOWL)
             );
-            return;
-        }
 
-        held.setAmount(held.getAmount() - 1);
+        } else {
 
-        Map<Integer, ItemStack> leftovers =
-                player.getInventory().addItem(new ItemStack(Material.BOWL));
+            item.setAmount(item.getAmount() - 1);
 
-        leftovers.values().forEach(leftover ->
+            java.util.Map<Integer, ItemStack> leftovers =
+                    player.getInventory().addItem(
+                            new ItemStack(Material.BOWL)
+                    );
+
+            for (ItemStack leftover : leftovers.values()) {
                 player.getWorld().dropItemNaturally(
-                        player.getLocation(), leftover
-                )
-        );
+                        player.getLocation(),
+                        leftover
+                );
+            }
+        }
     }
 }
